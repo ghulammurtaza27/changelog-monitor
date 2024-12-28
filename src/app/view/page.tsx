@@ -84,7 +84,7 @@ export default function ViewChangelogs() {
         description="Track all API changes, updates, and improvements across our services."
         breadcrumbItems={[
           { label: 'Home', href: '/' },
-          { label: 'Developer tools' }
+          { label: 'Changelog' }
         ]}
       />
 
