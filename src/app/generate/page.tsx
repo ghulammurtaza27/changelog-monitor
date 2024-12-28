@@ -6,6 +6,7 @@ import { RepositoryInput } from '@/components/generate/RepositoryInput'
 import { DateRangeSelector } from '@/components/generate/DateRangeSelector'
 import { ChangelogOptions } from '@/components/generate/ChangelogOptions'
 import { StatusMessage } from '@/components/generate/StatusMessage'
+import { ChangelogResponse } from '@/types/changelog'
 
 export default function GenerateChangelog() {
   const [repoUrl, setRepoUrl] = useState('')

@@ -30,13 +30,13 @@ export async function fetchCommits(repoUrl: string, fromDate: string, toDate: st
     }))
   } catch (error) {
     console.error('Error fetching commits:', error)
-    throw new Error(`Failed to fetch commits: ${error.message}`)
+    throw new Error(`Failed to fetch commits: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
 export async function generateChangelog(commits: any[]) {
   // Group commits by type (feat, fix, etc.)
-  const groupedCommits = commits.reduce((acc, commit) => {
+  const groupedCommits: Record<string, any[]> = commits.reduce((acc, commit) => {
     const message = commit.message
     let type = 'other'
 

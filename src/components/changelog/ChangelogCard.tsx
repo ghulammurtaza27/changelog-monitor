@@ -1,24 +1,14 @@
-import { ChangelogContent } from './ChangelogContent'
-
-interface Changelog {
-  id: string;
-  version: string;
-  date: string;
-  repoUrl: string;
-  changes: Change[];
-}
-
-interface Change {
-  id: string;
-  description: string;
-  type: string;
-  impact: string;
-  whatsNew: string;
-}
+import { Change } from '@/types/changelog';
+import { ChangelogContent } from './ChangelogContent';
 
 interface ChangelogCardProps {
-  changelog: Changelog;
-  onChangeSelect: (change: Change) => void;
+  changelog: {
+    version: string;
+    date: string;
+    repoUrl: string;
+    changes: Change[];
+  };
+  onChangeSelect: (change: Partial<Change>, repoUrl: string) => void;
 }
 
 export function ChangelogCard({ changelog, onChangeSelect }: ChangelogCardProps) {

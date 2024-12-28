@@ -10,10 +10,10 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 // Rate limiting configuration
 const RATE_LIMIT = {
   maxRetries: 3,
-  baseDelay: 5000,    // 5 seconds
+  baseDelay: 1000,    // 5 seconds
   batchSize: 1,        // Process 1 at a time
-  batchDelay: 5000,   // 5 seconds between batches
-  requestDelay: 5000   // 5 seconds between requests
+  batchDelay: 1000,   // 5 seconds between batches
+  requestDelay: 1000   // 5 seconds between requests
 }
 
 // Helper functions
@@ -30,7 +30,21 @@ async function waitForRateLimit() {
   await delay(waitTime)
 }
 
-function createPrompt(analysis: any) {
+interface CommitChange {
+  files: string[];
+  message: string;
+  author: string;
+  sha: string;
+}
+
+interface Analysis {
+  totalFiles: number;
+  totalAdditions: number;
+  totalDeletions: number;
+  changes: CommitChange[];
+}
+
+function createPrompt(analysis: Analysis) {
   return `
     As an expert developer, analyze these code changes and generate a detailed changelog entry.
     
@@ -38,10 +52,10 @@ function createPrompt(analysis: any) {
     - Total files changed: ${analysis.totalFiles}
     - Lines added: ${analysis.totalAdditions}
     - Lines deleted: ${analysis.totalDeletions}
-    - File changes: ${JSON.stringify(analysis.changes.map(c => c.files))}
+    - File changes: ${JSON.stringify(analysis.changes.map((c: CommitChange) => c.files))}
     
     Commit Information:
-    ${JSON.stringify(analysis.changes.map(c => ({
+    ${JSON.stringify(analysis.changes.map((c: CommitChange) => ({
       message: c.message,
       author: c.author,
       sha: c.sha.slice(0, 7),

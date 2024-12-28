@@ -1,4 +1,5 @@
 import { ChangeList } from './ChangeList'
+import { Change as ChangeType } from '@/types/changelog';
 
 interface Change {
   id: string;
@@ -9,9 +10,9 @@ interface Change {
 }
 
 interface ChangelogContentProps {
-  changes: Change[];
+  changes: Partial<ChangeType>[];
   repoUrl: string;
-  onChangeSelect: (change: Change, repoUrl: string) => void;
+  onChangeSelect: (change: Partial<ChangeType>, repoUrl: string) => void;
 }
 
 export function ChangelogContent({ changes, repoUrl, onChangeSelect }: ChangelogContentProps) {
@@ -60,7 +61,7 @@ export function ChangelogContent({ changes, repoUrl, onChangeSelect }: Changelog
             </div>
             <div className="space-y-4">
               <ChangeList 
-                changes={typeChanges} 
+                changes={typeChanges as ChangeType[]} 
                 repoUrl={repoUrl}
                 onChangeSelect={(change) => onChangeSelect(change, repoUrl)}
               />

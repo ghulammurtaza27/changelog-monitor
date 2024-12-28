@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { ChangeModal } from '@/components/changelog/ChangeModal'
 import { SearchFilters } from '@/components/changelog/SearchFilters'
 import { ChangelogContent } from '@/components/changelog/ChangelogContent'
+import { Changelog, Change } from '@/types/changelog'
 
 
 export default function ViewChangelogs() {
@@ -55,8 +56,8 @@ export default function ViewChangelogs() {
     })).filter(changelog => changelog.changes.length > 0);
   }, [changelogs, searchTerm, filterType]);
 
-  const handleChangeSelect = (change: Change, repoUrl: string) => {
-    setSelectedChange(change);
+  const handleChangeSelect = (change: Partial<Change>, repoUrl: string) => {
+    setSelectedChange(change as Change);
     setSelectedRepoUrl(repoUrl);
   };
 
