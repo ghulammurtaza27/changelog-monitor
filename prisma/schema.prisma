@@ -1,0 +1,41 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Changelog {
+  id        String   @id @default(uuid())
+  repoUrl   String
+  version   String
+  date      DateTime
+  title     String
+  summary   String
+  whatsNew  String
+  impact    String
+  upgrade   String
+  changes   Change[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Change {
+  id          String    @id @default(uuid())
+  changelogId String
+  description String
+  type        String
+  impact      String
+  author      String
+  date        String
+  details     String
+  sha         String
+  whatsNew    String
+  changelog   Changelog @relation(fields: [changelogId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
