@@ -18,7 +18,7 @@ export default function ViewChangelogs() {
   const [filterType, setFilterType] = useState('ALL')
   const [timeRange, setTimeRange] = useState('all'); // 'all', 'week', 'month', 'quarter'
   const [groupBy, setGroupBy] = useState('date'); // 'date', 'type', 'author'
-  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid', 'timeline'
+  const [viewMode, setViewMode] = useState('list'); // 'list', 'grid'
   const [selectedRepo, setSelectedRepo] = useState('all');
 
   useEffect(() => {
