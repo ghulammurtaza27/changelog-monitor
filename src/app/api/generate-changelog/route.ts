@@ -10,10 +10,10 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 // Rate limiting configuration
 const RATE_LIMIT = {
   maxRetries: 3,
-  baseDelay: 1000,    // 5 seconds
+  baseDelay: 5000,    // 5 seconds
   batchSize: 1,        // Process 1 at a time
-  batchDelay: 1000,   // 5 seconds between batches
-  requestDelay: 1000   // 5 seconds between requests
+  batchDelay: 5000,   // 5 seconds between batches
+  requestDelay: 5000   // 5 seconds between requests
 }
 
 // Helper functions

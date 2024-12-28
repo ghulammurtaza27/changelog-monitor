@@ -23,7 +23,10 @@ export function ChangeList({ changes, repoUrl, onChangeSelect }: ChangeListProps
       FEATURE: 'text-green-600 bg-green-50 border-green-200',
       BUGFIX: 'text-blue-600 bg-blue-50 border-blue-200',
       PERFORMANCE: 'text-purple-600 bg-purple-50 border-purple-200',
-      DEPENDENCY: 'text-teal-600 bg-teal-50 border-teal-200',
+      ENHANCEMENT: 'text-gray-600 bg-gray-50 border-gray-200',
+      OTHER: 'text-gray-600 bg-gray-50 border-gray-200',
+      DOCS: 'text-gray-600 bg-gray-50 border-gray-200',
+      DEPENDENCY: 'text-gray-600 bg-gray-50 border-gray-200',
       REFACTOR: 'text-gray-600 bg-gray-50 border-gray-200'
     };
     return colors[type as keyof typeof colors] || 'text-gray-600 bg-gray-50 border-gray-200';

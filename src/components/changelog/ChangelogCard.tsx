@@ -28,6 +28,7 @@ export function ChangelogCard({ changelog, onChangeSelect }: ChangelogCardProps)
         changes={changelog.changes} 
         repoUrl={changelog.repoUrl}
         onChangeSelect={onChangeSelect}
+        viewMode="list"
       />
     </div>
   );

@@ -45,6 +45,9 @@ export function SearchFilters({
         <option value="PERFORMANCE">Performance</option>
         <option value="DEPENDENCY">Dependencies</option>
         <option value="REFACTOR">Refactors</option>
+        <option value="ENHANCEMENT">Enhancements</option>
+        <option value="DOCS">Documentation</option>
+        <option value="OTHER">Other</option>
       </select>
     </div>
   );
