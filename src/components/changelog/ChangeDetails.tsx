@@ -8,6 +8,7 @@ interface Change {
   author: string;
   date: string;
   sha: string;
+  codeChanges?: string;
 }
 
 interface ChangeDetailsProps {
@@ -36,6 +37,21 @@ export function ChangeDetails({ change, repoUrl }: ChangeDetailsProps) {
 
   const commitUrl = getCommitUrl();
 
+  const formatTechnicalSummary = (text: string) => {
+    return text.split(/(`[^`]+`)/).map((part, index) => {
+      if (part.startsWith('`') && part.endsWith('`')) {
+        // Extract code without backticks
+        const code = part.slice(1, -1);
+        return (
+          <code key={index} className="font-mono text-[#c678dd] mx-0.5">
+            {code}
+          </code>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
     <div className="p-6 overflow-y-auto">
       <div className="space-y-8">
@@ -60,8 +76,12 @@ export function ChangeDetails({ change, repoUrl }: ChangeDetailsProps) {
         <div className="space-y-6">
           <div>
             <h4 className="text-sm font-medium text-gray-500 mb-2">Technical Summary</h4>
-            <p className="text-gray-900 bg-gray-50 p-4 rounded-lg">{change.whatsNew}</p>
+            <div className="text-gray-900 bg-gray-50 p-4 rounded-lg">
+              {formatTechnicalSummary(change.whatsNew)}
+            </div>
           </div>
+
+         
 
           <div>
             <h4 className="text-sm font-medium text-gray-500 mb-2">Impact Analysis</h4>

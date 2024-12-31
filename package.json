@@ -12,6 +12,7 @@
     "@google/generative-ai": "^0.21.0",
     "@octokit/rest": "^21.0.2",
     "@prisma/client": "^6.1.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@upstash/ratelimit": "github:upstash/ratelimit",
     "async-sema": "^3.1.1",
     "class-variance-authority": "^0.7.1",
@@ -22,6 +23,7 @@
     "pg": "^8.13.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-syntax-highlighter": "^15.6.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.3"
