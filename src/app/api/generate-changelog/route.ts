@@ -30,7 +30,16 @@ export async function POST(req: Request) {
     for (const change of analysis.changes) {
       console.log(`Analyzing change: ${change.sha.slice(0, 7)}`);
       
-      const analysisResult = await aiService.analyzeChangeImpact(change);
+      // Get the git diff for this commit
+      const diffContent = await githubService.getCommitDiff(owner, repo, change.sha);
+      
+      // Add the diff to the change object
+      const enrichedChange = {
+        ...change,
+        codeChanges: diffContent
+      };
+      
+      const analysisResult = await aiService.analyzeChangeImpact(enrichedChange);
       analyzedChanges.push({
         description: change.message.split('\n')[0],
         type: analysisResult.category,

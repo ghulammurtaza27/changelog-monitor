@@ -127,6 +127,9 @@ export class AIService {
   }
 
   private createImpactPrompt(change: any): string {
+    // Extract meaningful information from the diff
+    const diffSummary = this.processDiff(change.codeChanges || '');
+
     return `Analyze this code change and provide details in JSON format:
     
     Commit Message: ${change.message}
@@ -134,16 +137,46 @@ export class AIService {
     Additions: ${change.additions || 0}
     Deletions: ${change.deletions || 0}
     
-    Code Changes:
-    ${change.codeChanges || 'No code changes available'}
+    Code Changes Summary:
+    ${diffSummary}
     
     Return only a JSON object with these fields:
     {
       "category": one of [FEATURE, BUGFIX, ENHANCEMENT, REFACTOR, DOCS, BREAKING, SECURITY, PERFORMANCE, DEPENDENCY, OTHER],
-      "technicalSummary": "detailed description of what changed in the code",
-      "impact": "analysis of the changes' impact",
+      "technicalSummary": "detailed technical description of what changed in the code, based on the actual code changes",
+      "impact": "analysis of how these changes affect the system and developers",
       "breaking": boolean,
       "securityRelated": boolean
     }`;
-  } 
+  }
+
+  private processDiff(diff: string): string {
+    // Skip binary files and other non-text content
+    if (!diff || diff.includes('Binary files')) {
+      return 'No text changes available';
+    }
+
+    // Process the git diff to extract meaningful changes
+    const changes = diff.split('\n')
+      .filter(line => {
+        // Filter out diff metadata and context lines
+        return line.startsWith('+') || line.startsWith('-');
+      })
+      .map(line => {
+        // Clean up the diff markers for better readability
+        return line.replace(/^[+-]/, '').trim();
+      })
+      .filter(line => {
+        // Filter out empty lines and common noise
+        return line && 
+               !line.match(/^\s*$/) && 
+               !line.match(/^\s*\/\/\s*$/) &&
+               !line.match(/^\s*console\.log/);
+      });
+
+    // Limit the number of changes to prevent token overflow
+    const limitedChanges = changes.slice(0, 50);
+    
+    return limitedChanges.join('\n');
+  }
 }

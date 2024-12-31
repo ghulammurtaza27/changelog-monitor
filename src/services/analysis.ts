@@ -33,6 +33,7 @@ export class AnalysisService {
             details: '',
             sha: change.sha,
             whatsNew: change.whatsNew,
+            diff: change.diff,
             createdAt: now,
             updatedAt: now
           }))

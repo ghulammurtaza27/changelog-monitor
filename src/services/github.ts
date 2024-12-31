@@ -22,4 +22,17 @@ export class GitHubService {
       ref
     });
   }
+
+  async getCommitDiff(owner: string, repo: string, sha: string) {
+    const response = await this.octokit.repos.getCommit({
+      owner,
+      repo,
+      ref: sha,
+      mediaType: {
+        format: 'diff'
+      }
+    });
+    
+    return response.data;
+  }
 } 

@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -38,4 +36,5 @@ model Change {
   changelog   Changelog @relation(fields: [changelogId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  diff        String?   @db.Text
 }
