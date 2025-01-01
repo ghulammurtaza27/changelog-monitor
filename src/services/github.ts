@@ -8,28 +8,30 @@ export class GitHubService {
   }
 
   async listCommits(owner: string, repo: string, options?: { since?: Date; until?: Date }) {
-    // Get the date strings without time
-    const targetDate = options?.since?.toISOString().split('T')[0];
+    // Adjust dates to cover full day in UTC
+    const since = options?.since 
+      ? new Date(options.since.setUTCHours(0, 0, 0, 0))
+      : undefined;
+    
+    const until = options?.until
+      ? new Date(options.until.setUTCHours(23, 59, 59, 999))
+      : undefined;
 
     const response = await this.octokit.repos.listCommits({
       owner,
       repo,
-      per_page: 100 // Get maximum allowed commits
-    });
-
-    // Filter commits for the exact date
-    const filteredData = response.data.filter(commit => {
-      const commitDate = commit.commit.author?.date?.split('T')[0];
-      return commitDate === targetDate;
+      since: since?.toISOString(),
+      until: until?.toISOString(),
+      per_page: 25
     });
 
     console.log('GitHub API Response:', {
-      total: filteredData.length,
-      dates: filteredData.map(commit => commit.commit.author?.date),
-      shas: filteredData.map(commit => commit.sha)
+      total: response.data.length,
+      dates: response.data.map(commit => commit.commit.author?.date),
+      shas: response.data.map(commit => commit.sha)
     });
 
-    return { ...response, data: filteredData };
+    return response;
   }
 
   async getCommit(owner: string, repo: string, ref: string) {
