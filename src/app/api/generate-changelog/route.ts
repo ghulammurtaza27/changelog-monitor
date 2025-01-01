@@ -14,11 +14,18 @@ export async function POST(req: Request) {
   
   try {
     // 1. Parse request
-    const { repoUrl } = await req.json();
+    const { repoUrl, fromDate, toDate, includeBreaking, includeSecurity } = await req.json();
     const [owner, repo] = repoUrl.replace('https://github.com/', '').split('/');
 
+    // Convert ISO strings back to Date objects if they exist
+    const since = fromDate ? new Date(fromDate) : undefined;
+    const until = toDate ? new Date(toDate) : undefined;
+
     // 2. Fetch commits
-    const { data: commits } = await githubService.listCommits(owner, repo);
+    const { data: commits } = await githubService.listCommits(owner, repo, {
+      since,
+      until
+    });
     console.log(`Fetched ${commits.length} commits`);
 
     // 3. Analyze code changes

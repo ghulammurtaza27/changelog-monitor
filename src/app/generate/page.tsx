@@ -24,14 +24,30 @@ export default function GenerateChangelog() {
     setError(null)
     setSuccess(false)
 
+    // Validate dates
+    if (fromDate && toDate) {
+      const fromDateTime = new Date(fromDate).getTime()
+      const toDateTime = new Date(toDate).getTime()
+      
+      if (fromDateTime > toDateTime) {
+        setError('Start date cannot be after end date')
+        setLoading(false)
+        return
+      }
+    }
+
     try {
+      // Format dates to ISO string if they exist
+      const formattedFromDate = fromDate ? new Date(fromDate).toISOString() : undefined
+      const formattedToDate = toDate ? new Date(toDate).toISOString() : undefined
+
       const response = await fetch('/api/generate-changelog', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           repoUrl, 
-          fromDate, 
-          toDate,
+          fromDate: formattedFromDate, 
+          toDate: formattedToDate,
           includeBreaking: hasBreakingChanges,
           includeSecurity: hasSecurityChanges
         })

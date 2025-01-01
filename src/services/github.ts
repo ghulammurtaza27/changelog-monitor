@@ -7,12 +7,29 @@ export class GitHubService {
     this.octokit = new Octokit({ auth: token });
   }
 
-  async listCommits(owner: string, repo: string) {
-    return await this.octokit.repos.listCommits({
+  async listCommits(owner: string, repo: string, options?: { since?: Date; until?: Date }) {
+    // Get the date strings without time
+    const targetDate = options?.since?.toISOString().split('T')[0];
+
+    const response = await this.octokit.repos.listCommits({
       owner,
       repo,
-      per_page: 5
+      per_page: 100 // Get maximum allowed commits
     });
+
+    // Filter commits for the exact date
+    const filteredData = response.data.filter(commit => {
+      const commitDate = commit.commit.author?.date?.split('T')[0];
+      return commitDate === targetDate;
+    });
+
+    console.log('GitHub API Response:', {
+      total: filteredData.length,
+      dates: filteredData.map(commit => commit.commit.author?.date),
+      shas: filteredData.map(commit => commit.sha)
+    });
+
+    return { ...response, data: filteredData };
   }
 
   async getCommit(owner: string, repo: string, ref: string) {
